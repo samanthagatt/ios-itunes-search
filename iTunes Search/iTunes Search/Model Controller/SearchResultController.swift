@@ -14,15 +14,14 @@ class SearchResultController {
     var searchResults: [SearchResult] = []
     
     // MARK: - Base URL
-    let baseURL = URL(string: "https://itunes.apple.com")!
+    let baseURL = URL(string: "https://itunes.apple.com/search")!
     
     // MARK: - Search Function
-    // "Result of call is unused, but produces NSError()" ... what does returning NSError? actually do?
+    // "Result of call is unused, but produces NSError()"
     func performSearch(for searchTerm: String, resultType: ResultType, completion: @escaping ([SearchResult]?, Error?) -> NSError?) {
         
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
-        // Should I include the "?"?
-        let searchQueryItem =  URLQueryItem(name: "search", value: searchTerm)
+        let searchQueryItem =  URLQueryItem(name: "term", value: searchTerm)
         urlComponents.queryItems = [searchQueryItem]
         
         guard let requestURL = urlComponents.url else {
