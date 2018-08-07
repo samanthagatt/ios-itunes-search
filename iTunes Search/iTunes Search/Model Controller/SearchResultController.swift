@@ -18,7 +18,7 @@ class SearchResultController {
     
     // MARK: - Search Function
     // "Result of call is unused, but produces NSError()"
-    func performSearch(for searchTerm: String, resultType: ResultType, completion: @escaping ([SearchResult]?, Error?) -> NSError?) {
+    func performSearch(for searchTerm: String, resultType: ResultType, completion: @escaping ([SearchResult]?, Error?) -> Void) {
         
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
         let searchQueryItem =  URLQueryItem(name: "term", value: searchTerm)
@@ -51,7 +51,7 @@ class SearchResultController {
             do {
                 let jsonDecoder = JSONDecoder()
                 let decodedResults = try jsonDecoder.decode(SearchResults.self, from: data)
-                let searchResults = decodedResults.results
+                let searchResults = decodedResults.results.filter { $0.resultType == resultType.rawValue }
                 completion(searchResults, nil)
             } catch {
                 NSLog("Error decoding data: \(error)")

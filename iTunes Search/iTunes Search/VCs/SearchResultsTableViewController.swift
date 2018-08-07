@@ -29,8 +29,21 @@ class SearchResultsTableViewController: UITableViewController, UISearchBarDelega
     // MARK: - SearchBarDelegate
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        search()
+    }
+    
+    
+    // MARK: - Actions
+    
+    @IBAction func changeSegment(_ sender: Any) {
+        search()
+    }
+    
+    
+    // MARK: - Functions
+    
+    func search() {
         guard let searchTerm = searchBar.text else { return }
-        // Instructions said to make it a type ResultType! but I left off the ! because I didn't see why it was needed and it made .software etc not work
         var resultType: ResultType
         
         switch segmentedControl.selectedSegmentIndex {
@@ -42,18 +55,17 @@ class SearchResultsTableViewController: UITableViewController, UISearchBarDelega
             resultType = .movie
         }
         
-        searchResultController.performSearch(for: searchTerm, resultType: resultType) { (searchResults, error) -> NSError? in
+        searchResultController.performSearch(for: searchTerm, resultType: resultType) { (searchResults, error) -> Void in
             
             if let error = error {
                 NSLog("Error performing search: \(error)")
-                return NSError()
+                return
             }
             
             self.searchResults = searchResults ?? []
-            return nil
+            return
         }
     }
-    
     
     // MARK: - Properties
     
