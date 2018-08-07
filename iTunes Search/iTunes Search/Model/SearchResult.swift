@@ -11,12 +11,10 @@ import Foundation
 struct SearchResult: Codable {
     let title: String?
     let creator: String?
-    let resultType: String?
     
     enum CodingKeys: String, CodingKey {
         case title = "trackName"
         case creator = "artistName"
-        case resultType = "kind"
     }
 }
 

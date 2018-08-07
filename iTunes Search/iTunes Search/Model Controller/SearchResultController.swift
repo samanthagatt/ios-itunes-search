@@ -21,8 +21,9 @@ class SearchResultController {
     func performSearch(for searchTerm: String, resultType: ResultType, completion: @escaping ([SearchResult]?, Error?) -> Void) {
         
         var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)!
-        let searchQueryItem =  URLQueryItem(name: "term", value: searchTerm)
-        urlComponents.queryItems = [searchQueryItem]
+        let searchTermQueryItem =  URLQueryItem(name: "term", value: searchTerm)
+        let searchEntityQueryItem = URLQueryItem(name: "entity", value: resultType.rawValue)
+        urlComponents.queryItems = [searchTermQueryItem, searchEntityQueryItem]
         
         guard let requestURL = urlComponents.url else {
             NSLog("Error constructing search URL for \(searchTerm)")
@@ -51,7 +52,7 @@ class SearchResultController {
             do {
                 let jsonDecoder = JSONDecoder()
                 let decodedResults = try jsonDecoder.decode(SearchResults.self, from: data)
-                let searchResults = decodedResults.results.filter { $0.resultType == resultType.rawValue }
+                let searchResults = decodedResults.results
                 completion(searchResults, nil)
             } catch {
                 NSLog("Error decoding data: \(error)")
